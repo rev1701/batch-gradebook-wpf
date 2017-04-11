@@ -6,15 +6,45 @@
         xmlns:local="clr-namespace:BatchGbViewer"
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="1300" Icon="Images/revature.ico">
-    <Grid>
-        <TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="559" Margin="10,10,0,0" VerticalAlignment="Top" Width="1272">
-            <TabItem Header="Batch">
-                <Grid Background="#FFE5E5E5"/>
-            </TabItem>
-            <TabItem Header="Grade Book">
-                <Grid Background="#FFE5E5E5"/>
-            </TabItem>
-        </TabControl>
+   <Grid>
+      <TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="559" Margin="10,10,0,0" VerticalAlignment="Top" Width="1272">
+         <TabItem Header="Batch">
+            <Grid Background="#FFE5E5E5"/>
+         </TabItem>
 
-    </Grid>
+         <!-- Grade Book Tab -->
+         <TabItem Header="Grade Book">
+            <Grid Background="#FFE5E5E5">
+               <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="111*"/>
+                  <ColumnDefinition Width="101*"/>
+                  <ColumnDefinition Width="1054*"/>
+               </Grid.ColumnDefinitions>
+               <StackPanel Grid.ColumnSpan="3">
+                  <TextBlock x:Name="Search_GB" Text="Search" FontSize="20" Margin="5,5,0,0" FontWeight="ExtraBold"/>
+
+                  <!-- by Associate Name  -->
+                  <Label x:Name="AssociateName" Content="By Associate Name" />
+                  <StackPanel Orientation="Horizontal">
+                     <TextBox x:Name="AssociateFN" HorizontalAlignment="Left"  Height="23" Margin="10,5,0,0" Text="First Name" Width="90"/>
+                     <TextBox x:Name="AssociateLN" HorizontalAlignment="Left" Height="23" Margin="10,5,0,0" Text="Last Name" Width="90"/>
+                  </StackPanel>
+
+                  <!-- by Batch Name -->
+                  <Label x:Name="GB_Batch_Name" Content="By Batch Name" />
+                  <ListBox x:Name="listBox" HorizontalAlignment="Left" Height="23" Margin="10,5,0,0" Width="190" SelectionChanged="listBox_SelectionChanged"/>
+
+                  <!-- Submit Button -->
+                  <Button x:Name="Submit" HorizontalAlignment="Left" Margin="157,15,0,0" Content="Submit" />
+               </StackPanel>
+               <!-- Grid to contain search results -->
+               <!-- Default designed to display ALL as the initial search upon opening the tab -->
+               <DataGrid x:Name="dataGrid" Background="#FFFFFF" Grid.Column="2" />
+
+            </Grid>
+         </TabItem>
+
+      </TabControl>
+
+   </Grid>
 </Window>
