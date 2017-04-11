@@ -8,9 +8,100 @@
         Title="MainWindow" Height="600" Width="1300" Icon="Images/revature.ico">
     <Grid>
         <TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="559" Margin="10,10,0,0" VerticalAlignment="Top" Width="1272">
+
+            <!--Batch Tab Area-->
             <TabItem Header="Batch">
-                <Grid Background="#FFE5E5E5"/>
+                <Grid Background="#FFE5E5E5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="257*"/>
+                        <ColumnDefinition Width="0*"/>
+                        <ColumnDefinition Width="1009*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.ColumnSpan="3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150*"></ColumnDefinition>
+                            <ColumnDefinition Width="450*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel x:Name="BatchSearchPanel" Grid.Column="0" HorizontalAlignment="Left" Height="511" Margin="10,10,0,0" VerticalAlignment="Top" Width="227">
+                            <TextBlock x:Name="textBlock" TextWrapping="Wrap" Text="Search
+                                       " FontSize="20" FontWeight="ExtraBold"></TextBlock>
+                            <TextBlock></TextBlock>
+                            <!--Trainer input-->
+                            <StackPanel>
+                                <TextBlock Text="Trainer" Margin="8,0,76,5"/>
+                                <TextBox x:Name="txTrainer" Margin="-13,0,0,0" Width="202"/>
+                                <TextBlock></TextBlock>
+                            </StackPanel>
+
+                            <!--Technology input-->
+                            <StackPanel>
+                                <TextBlock Text="Technology" Margin="7,0,76,5"/>
+                                <TextBox x:Name="txtTechnology" Margin="-13,0,0,0" Width="202"></TextBox>
+                                <TextBlock></TextBlock>
+                            </StackPanel>
+
+                            <!--Date input-->
+                            <StackPanel>
+                                <TextBlock Text="Start Date" Width="75" FontSize="14" Margin="0,0,0,5"></TextBlock>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="From" Margin="8,0,0,5" Width="31"></TextBlock>
+                                    <TextBlock Text="To" Margin="68,0,0,0"></TextBlock>
+                                    <TextBlock></TextBlock>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+
+                                    <DatePicker x:Name="FromDate" Margin="6,0,0,0" Width="99"></DatePicker>
+
+                                    <DatePicker x:Name="ToDate" Margin=" 4,0,0,0" Width="98"></DatePicker>
+                                    <TextBlock></TextBlock>
+                                </StackPanel>
+
+                            </StackPanel>
+
+                            <!--Batch input-->
+                            <StackPanel>
+                                <TextBlock></TextBlock>
+                                <TextBlock Text="Batch Name" Margin="8,0,76,5"/>
+                                <TextBox x:Name="txtBatchName" Margin="-13,0,0,0" Width="202"></TextBox>
+                            </StackPanel>
+
+                            <!--Search Button-->
+                            <StackPanel Orientation="Horizontal" Margin="79,10,0,0">
+                                <Button x:Name="btnSearch"  Content=" Search" Margin="0,0,10,0" Click="btnSearch_Click" Background="White" FontSize="20"/>
+
+                            </StackPanel>
+
+                        </StackPanel>
+
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="257*"/>
+                                <ColumnDefinition Width="0*"></ColumnDefinition>
+                                <ColumnDefinition Width="5*"/>
+                                <ColumnDefinition Width="0*"/>
+                                <ColumnDefinition Width="54*"/>
+                            </Grid.ColumnDefinitions>
+                            <ListView  ItemsSource="{Binding SourceCollection}" Margin="0,0,-946,10" ScrollViewer.CanContentScroll="True" Grid.ColumnSpan="4" Grid.Column="1">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Header="Batch Name" Width="200"  DisplayMemberBinding="{Binding Test1}" />
+                                        <GridViewColumn Header="Technology" Width="200" DisplayMemberBinding="{Binding Test2}" />
+                                        <GridViewColumn Header="Start Date From" Width="200" DisplayMemberBinding="{Binding Test3}" />
+                                        <GridViewColumn Header="Start Date To" Width="200" DisplayMemberBinding="{Binding Test1}" />
+                                        <GridViewColumn Header="Trainer" Width="200" DisplayMemberBinding="{Binding Test1}" />
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </Grid>
+                    </Grid>
+                </Grid>
             </TabItem>
+
+
+
+            <!--Grade Book Tab Area-->
             <TabItem Header="Grade Book">
                 <Grid Background="#FFE5E5E5"/>
             </TabItem>
