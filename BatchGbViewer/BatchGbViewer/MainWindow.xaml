@@ -13,11 +13,12 @@
             <TabItem Header="Batch">
                 <Grid Background="#FFE5E5E5">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="257*"/>
+                        <ColumnDefinition Width="73*"/>
+                        <ColumnDefinition Width="184*"/>
                         <ColumnDefinition Width="0*"/>
                         <ColumnDefinition Width="1009*"/>
                     </Grid.ColumnDefinitions>
-                    <Grid Grid.ColumnSpan="3">
+                    <Grid Grid.ColumnSpan="4">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="150*"></ColumnDefinition>
                             <ColumnDefinition Width="450*"></ColumnDefinition>
