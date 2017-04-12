@@ -10,11 +10,6 @@ namespace BatchGbViewer
 {
     public partial class MainWindow : Window
     {
-        private void listBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
 
