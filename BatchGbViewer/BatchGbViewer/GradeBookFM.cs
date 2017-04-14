@@ -49,7 +49,7 @@ namespace BatchGbViewer
          {
             foreach (Batch b in batch)
             {
-               batches.Add(b.BatchName);
+               batches.Add(b.Name);
             }
          }
 
