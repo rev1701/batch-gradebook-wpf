@@ -69,12 +69,30 @@ namespace BatchGbViewer
          comboBox.SelectedIndex = 0;
       }
 
+      private async void GB_DataGrid_View_Loaded(object sender, RoutedEventArgs e)
+      {
+         var gridView = sender as DataGrid;
+         gridView.ItemsSource = await GetInitialGridView();
+      }
+
       /// <summary>
       /// This method is designed to pre-render the DataGrid view
       /// </summary>
-      private void GetInitialGridView()
+      private async Task<List<Batch>> GetInitialGridView()
       {
+         HttpResponseMessage response = await batchClient.GetAsync("./api/Batches");
+         response.EnsureSuccessStatusCode(); // throw an error code
+         var batch = await response.Content.ReadAsAsync<IEnumerable<Batch>>();
+         List<Batch> batches = new List<Batch>();
 
+         if (batch != null)
+         {
+            foreach (Batch b in batch)
+            {
+               batches.Add(b);
+            }
+         }
+         return batches;
       }
 
       /// <summary>
@@ -84,6 +102,7 @@ namespace BatchGbViewer
       {
 
       }
+
 
 
       /// <summary>
