@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="1300" Icon="Images/revature.ico">
 
-    <Grid>
+   <Grid>
       <TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="559" Margin="10,10,0,0" VerticalAlignment="Top" Width="1272">
 
          <!--Batch Tab Area-->
@@ -124,7 +124,9 @@
 
                   <!-- by Batch Name -->
                   <Label x:Name="GB_Batch_Name" Content="By Batch Name" />
-                  <ComboBox x:Name="GB_listBox" ItemsSource="{Binding}"  Background="#FFFFFF" HorizontalAlignment="Left" Height="23" Margin="10,5,0,0" Width="190" Loaded="GB_listBox_Loaded" />
+                  <ComboBox x:Name="GB_listBox" Background="#FFFFFF" HorizontalAlignment="Left" Height="23" Margin="10,5,0,0" Width="190" Loaded="GB_listBox_Loaded" ItemsSource="{Binding}">
+                     <!--<ComboBoxItem Tag="Default" IsSelected="True">Select a Batch</ComboBoxItem>-->
+                  </ComboBox>
 
                   <!-- Submit Button -->
                   <Button x:Name="Submit" Background="#AFAFAF" HorizontalAlignment="Left" Margin="149,15,0,0" Height="30" Width="50" Content="Submit" />

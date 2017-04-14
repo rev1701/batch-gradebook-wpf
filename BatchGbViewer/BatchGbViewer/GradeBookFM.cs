@@ -17,7 +17,7 @@ namespace BatchGbViewer
    /// </summary>
    public partial class MainWindow : Window
    {
-      private static HttpClient client = new HttpClient();
+
       private static HttpClient users = new HttpClient();
       private static HttpClient exams = new HttpClient();
 
@@ -28,38 +28,45 @@ namespace BatchGbViewer
       /// <param name="e"></param>
       private void GB_listBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
       {
-
+         List<string> x = new List<string>() { };
+         //listBatchName.Items.Add(x);
       }
 
 
-
-      private async Task<List<String>> GetBatches()
+      /// <summary>
+      /// The purpose of this method is to get all batches and their content as a List Object.
+      /// 
+      /// </summary>
+      /// <returns></returns>
+      private async Task<List<string>> GetBatchList()
       {
-         client.BaseAddress = new Uri("http://ec2-54-215-138-178.us-west-1.compute.amazonaws.com/UserBuffetService/");
-         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-         HttpResponseMessage response = await client.GetAsync("./api/Batches/GetBatches");
+         HttpResponseMessage response = await batchClient.GetAsync("./api/Batches");
          response.EnsureSuccessStatusCode(); // throw an error code
-         var batches = await response.Content.ReadAsAsync<IEnumerable<Batch>>();
+         var batch = await response.Content.ReadAsAsync<IEnumerable<Batch>>();
+         List<string> batches = new List<string>();
+
+         if (batch != null)
+         {
+            foreach (Batch b in batch)
+            {
+               batches.Add(b.BatchName);
+            }
+         }
+
+         return batches;
       }
+
+
       /// <summary>
       /// This method will handle how the drop down filter is populated
       /// </summary>
       /// <param name="sender"></param>
       /// <param name="e"></param>
-      private static async void GB_listBox_Loaded(object sender, RoutedEventArgs e)
+      private async void GB_listBox_Loaded(object sender, RoutedEventArgs e)
       {
-         try
-         {
-            using (HttpClient client = new HttpClient())
-            {
-               
-            }
-         }
-         catch (Exception ex)
-         {
-            Console.WriteLine(ex.ToString());
-         }
+         var comboBox = sender as ComboBox;
+         comboBox.ItemsSource = await GetBatchList();
+         comboBox.SelectedIndex = 0;
       }
 
       /// <summary>
