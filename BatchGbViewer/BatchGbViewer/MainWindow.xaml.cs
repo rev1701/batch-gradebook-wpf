@@ -27,6 +27,10 @@ namespace BatchGbViewer
       private static HttpClient usersClient = new HttpClient();
       private static HttpClient techClient = new HttpClient();
 
+      /// <summary>
+      /// The purpose of this class is to initialize the Base Address for the HttpClients the application will
+      /// be working with.
+      /// </summary>
       private void initializeClients()
       {
          batchClient.BaseAddress = new Uri("http://ec2-54-215-138-178.us-west-1.compute.amazonaws.com/UserBuffetService/");
@@ -39,12 +43,13 @@ namespace BatchGbViewer
          techClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
       }
 
-
+      /// <summary>
+      /// Main function of the entire application, this will run first.
+      /// </summary>
       public MainWindow()
       {
-
-         initializeClients();
-         InitializeComponent();
+         initializeClients(); // initialze clients
+         InitializeComponent(); //begin application
       }
    }
 }
