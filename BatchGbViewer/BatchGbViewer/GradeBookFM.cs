@@ -69,6 +69,12 @@ namespace BatchGbViewer
          comboBox.SelectedIndex = 0;
       }
 
+      /// <summary>
+      /// This method is called by the Grade Book DataGrid (GB_DataGrid_View) and initializes
+      /// the tabular data that the user will see upon opening the tab
+      /// </summary>
+      /// <param name="sender"></param>
+      /// <param name="e"></param>
       private async void GB_DataGrid_View_Loaded(object sender, RoutedEventArgs e)
       {
          var gridView = sender as DataGrid;
@@ -76,7 +82,8 @@ namespace BatchGbViewer
       }
 
       /// <summary>
-      /// This method is designed to pre-render the DataGrid view
+      /// This method is designed to interlace several API calls and generate the
+      /// initial DataGrid view based on the results
       /// </summary>
       private async Task<List<Batch>> GetInitialGridView()
       {
