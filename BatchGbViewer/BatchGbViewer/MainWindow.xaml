@@ -122,7 +122,7 @@
 
                   <!-- by Batch Name -->
                   <Label x:Name="GB_Batch_Name" Content="By Batch Name" />
-                  <ListBox x:Name="GB_listBox" HorizontalAlignment="Left" Height="23" Margin="10,5,0,0" Width="190" SelectionChanged="GB_listBox_SelectionChanged"/>
+                  <ComboBox x:Name="GB_listBox" ItemsSource="{Binding}"  Background="#FFFFFF" HorizontalAlignment="Left" Height="23" Margin="10,5,0,0" Width="190" Loaded="GB_listBox_Loaded" />
 
                   <!-- Submit Button -->
                   <Button x:Name="Submit" Background="#AFAFAF" HorizontalAlignment="Left" Margin="149,15,0,0" Height="30" Width="50" Content="Submit" />
@@ -134,7 +134,34 @@
                <ProgressBar Margin="0,521,0,-15" Grid.ColumnSpan="2" />
             </Grid>
          </TabItem>
-
+         <!--
+            <Window.Resources>
+               <XmlNamespaceMappingCollection x:Key="NamespaceMapping">
+                  <XmlNamespaceMapping Uri="http://ec2-54-215-138-178.us-west-1.compute.amazonaws.com/UserBuffetService/Help/Api/GET-api-Batches-GetBatches" Prefix="batchesGB" />
+               </XmlNamespaceMappingCollection>
+               <XmlDataProvider x:Key="BatchData"
+                                XmlNamespaceManager="{StaticResource NamespaceMapping}"
+                                Source="http://ec2-54-215-138-178.us-west-1.compute.amazonaws.com/UserBuffetService/Help/Api/GET-api-Batches-GetBatches"/>
+               <XmlDataProvider x:Key="CompositionData"
+                                XmlNamespaceManager="{StaticResource NamespaceMapping}"/>
+            </Window.Resources>
+           
+           
+            <ListBox x:Name="_composerList" Margin="40,20"
+                 ItemsSource="{Binding Source={StaticResource }, XPath=http://ec2-54-215-138-178.us-west-1.compute.amazonaws.com/UserBuffetService/Help/Api/GET-api-Batches-GetBatches}">
+               <ListBox.ItemTemplate>
+                  <DataTemplate>
+                     <TextBlock>
+                        <TextBlock.Text>
+                           <MultiBinding StringFormat="{}{0} {1} {2}">
+                              <Binding XPath="batches:BatchID"/>
+                           </MultiBinding>
+                        </TextBlock.Text>
+                     </TextBlock>
+                  </DataTemplate>
+               </ListBox.ItemTemplate>
+            </ListBox> 
+         -->
 
       </TabControl>
 
