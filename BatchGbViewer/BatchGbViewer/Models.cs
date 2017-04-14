@@ -8,8 +8,8 @@ namespace BatchGbViewer
 { 
    public class Batch
    {
-      public string ID { get; set; }
-      public string BatchName { get; set; }
+      public string BatchID { get; set; }
+      public string Name { get; set; }
       public string Technology { get; set; }
       public DateTime StartDateFrom { get; set; }
       public DateTime StartDateTo { get; set; }
