@@ -87,11 +87,13 @@ namespace BatchGbViewer
       /// </summary>
       private async Task<List<Batch>> GetInitialGridView()
       {
-         HttpResponseMessage response = await batchClient.GetAsync("./api/Batches");
-         response.EnsureSuccessStatusCode(); // throw an error code
-         var batch = await response.Content.ReadAsAsync<IEnumerable<Batch>>();
+         // The following gathers all the batches into a list object
+         HttpResponseMessage batchResponse = await batchClient.GetAsync("./api/Batches");
+         batchResponse.EnsureSuccessStatusCode(); // throw an error code if connection fails
+         var batch = await batchResponse.Content.ReadAsAsync<IEnumerable<Batch>>();
          List<Batch> batches = new List<Batch>();
 
+         // this if statment will generate the batch list
          if (batch != null)
          {
             foreach (Batch b in batch)
@@ -99,6 +101,24 @@ namespace BatchGbViewer
                batches.Add(b);
             }
          }
+
+         // The following gathers all the users into a list object
+         HttpResponseMessage userResponse = await usersClient.GetAsync("./api/Users");
+         userResponse.EnsureSuccessStatusCode(); //throw an error if connection fails
+         var user = await userResponse.Content.ReadAsAsync<IEnumerable<User>>();
+         List<User> users = new List<User>();
+
+         // this if statment will generate the user list
+         if (user != null)
+         {
+            foreach (User u in user)
+            {
+               users.Add(u);
+            }
+         }
+
+         // The following gathers all the exams into a list object
+         HttpResponseMessage examResponse = await examClient.GetAsync("./api/exam");
          return batches;
       }
 
