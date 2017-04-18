@@ -73,7 +73,7 @@ namespace BatchGbViewer
             {
                // This if statement is to ensure only users who are Trainers are collected 
                // and only valid Trainers (must have first and last name) are accepted into the list
-               if (u.UserType == "3" && !string.IsNullOrEmpty(u.FName) && !string.IsNullOrEmpty(u.LName))
+               if (u.UserType == 3 && !string.IsNullOrEmpty(u.FName) && !string.IsNullOrEmpty(u.LName))
                {
                   user.Add(u.FName + " " + u.LName);
                }
@@ -128,7 +128,7 @@ namespace BatchGbViewer
          {
             foreach (Batch b in tech.ToList())
             {
-               teches.Add(b.BatchID);
+               teches.Add(b.Name);
             }
          }
          return teches;

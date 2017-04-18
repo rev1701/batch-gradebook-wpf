@@ -17,10 +17,6 @@ namespace BatchGbViewer
    /// </summary>
    public partial class MainWindow : Window
    {
-
-      private static HttpClient users = new HttpClient();
-      private static HttpClient exams = new HttpClient();
-
       /// <summary>
       /// This method will handle the events that occure when the user changes the listbox selection
       /// </summary>
@@ -31,7 +27,6 @@ namespace BatchGbViewer
          List<string> x = new List<string>() { };
          //listBatchName.Items.Add(x);
       }
-
 
       /// <summary>
       /// The purpose of this method is to get all batches and their content as a List Object.
@@ -56,7 +51,6 @@ namespace BatchGbViewer
          return batches;
       }
 
-
       /// <summary>
       /// This method will handle how the drop down filter is populated
       /// </summary>
@@ -78,48 +72,85 @@ namespace BatchGbViewer
       private async void GB_DataGrid_View_Loaded(object sender, RoutedEventArgs e)
       {
          var gridView = sender as DataGrid;
-         gridView.ItemsSource = await GetInitialGridView();
+         gridView.ItemsSource = await GetInitialGridView2();
       }
+      
+      /// <summary>
+      /// 
+      /// </summary>
+      /// <returns></returns>
+      private async Task<List<UserGradeBook>> GetInitialGridView2()
+      {
+         HttpClient client = new HttpClient();
+
+      }
+
+
+
 
       /// <summary>
       /// This method is designed to interlace several API calls and generate the
       /// initial DataGrid view based on the results
       /// </summary>
-      private async Task<List<Batch>> GetInitialGridView()
+      private async Task<List<Grade>> GetInitialGridView()
       {
-         // The following gathers all the batches into a list object
-         HttpResponseMessage batchResponse = await batchClient.GetAsync("./api/Batches");
-         batchResponse.EnsureSuccessStatusCode(); // throw an error code if connection fails
-         var batch = await batchResponse.Content.ReadAsAsync<IEnumerable<Batch>>();
-         List<Batch> batches = new List<Batch>();
+         // Creates the GradeBook List variable
+         List<Grade> grades = new List<Grade>();
 
-         // this if statment will generate the batch list
-         if (batch != null)
+         // Creates the initial HTTP Request to the API call to collect the Users
+         HttpResponseMessage userResponse = await usersClient.GetAsync("./api/Users/");
+         
+         if (userResponse.IsSuccessStatusCode) // confirms that the connection was successful
          {
-            foreach (Batch b in batch)
+            try
             {
-               batches.Add(b);
+               // Establishes a variable holder for the initial content that is being pooled
+               var user = await userResponse.Content.ReadAsAsync<IEnumerable<User>>();
+
+               if (user != null) // Confirms that the pool is not empty
+               {
+                  foreach (User u in user)
+                  {
+                     // Makes a 2nd Http Request utilizing the emails of the collected Users to get each user's Gradebook
+                     HttpResponseMessage gradeResponse = await usersClient.GetAsync("./api/Users/GetUserGradebook?email=" + u.email);
+                     if (gradeResponse.IsSuccessStatusCode) // Confirms that the connection was successful
+                     {
+                        try
+                        {
+                           // Establishes a variable holder for the Grades that we are collecting
+                           var grade = await gradeResponse.Content.ReadAsAsync<IEnumerable<Grade>>();
+                           foreach (Grade g in grade)
+                           {
+                              grades.Add(g); // stores all of the new content into the established list variable
+                           }
+                        }
+                        catch (Exception e) // Display error if the try fails to generate and store the list properly
+                        {
+                           Console.WriteLine(e);
+                        }
+                     }
+                     else // display an error if the connection to the User/Gradebook API fails
+                     {
+                        Console.WriteLine("Failed to establish a connection with GetUserGradebook");
+                     }
+                  }
+               }
+               else // display an error if User Pool is Null
+               {
+                  Console.WriteLine("The users pool is empty. No Data to display");
+               }
+            }
+            catch (Exception e) // Display an error if it fails to complete any of the above tasks successfully
+            {
+               Console.WriteLine(e);
             }
          }
-
-         // The following gathers all the users into a list object
-         HttpResponseMessage userResponse = await usersClient.GetAsync("./api/Users");
-         userResponse.EnsureSuccessStatusCode(); //throw an error if connection fails
-         var user = await userResponse.Content.ReadAsAsync<IEnumerable<User>>();
-         List<User> users = new List<User>();
-
-         // this if statment will generate the user list
-         if (user != null)
+         else // display an error if the connection to the User API fails
          {
-            foreach (User u in user)
-            {
-               users.Add(u);
-            }
+            Console.WriteLine("Failed to establish a connection to API/Users");
          }
 
-         // The following gathers all the exams into a list object
-         HttpResponseMessage examResponse = await examClient.GetAsync("./api/exam");
-         return batches;
+         return grades; // return the results
       }
 
       /// <summary>
