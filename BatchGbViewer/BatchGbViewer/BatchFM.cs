@@ -61,7 +61,7 @@ namespace BatchGbViewer
       /// <returns></returns>
       public async Task<List<string>> getTrainers()
       {
-         HttpResponseMessage response = await usersClient.GetAsync("./api/users");
+         HttpResponseMessage response = await client.GetAsync("./api/users");
          response.EnsureSuccessStatusCode(); // Throw on error code if HttpClient fails to connect.
          var users = await response.Content.ReadAsAsync<IEnumerable<User>>();
          List<string> user = new List<string>();
@@ -118,7 +118,7 @@ namespace BatchGbViewer
       /// <returns></returns>
       private async Task<List<string>> getTechnologies()
       {
-         HttpResponseMessage response = await techClient.GetAsync("./api/Batches");
+         HttpResponseMessage response = await client.GetAsync("./api/Batches");
          response.EnsureSuccessStatusCode(); // Throw on error code.
          var tech = await response.Content.ReadAsAsync<IEnumerable<Batch>>();
          List<string> teches = new List<string>();
@@ -170,7 +170,7 @@ namespace BatchGbViewer
       /// <returns></returns>
       public async Task<List<string>> getBatches()
       {
-         HttpResponseMessage response = await batchClient.GetAsync("./api/batches");
+         HttpResponseMessage response = await client.GetAsync("./api/batches");
          response.EnsureSuccessStatusCode(); // Throw on error code. 
          var batches = await response.Content.ReadAsAsync<IEnumerable<Batch>>();
          List<string> batch = new List<string>();
