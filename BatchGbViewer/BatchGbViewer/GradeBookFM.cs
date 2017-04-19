@@ -103,7 +103,7 @@ namespace BatchGbViewer
                   grade.lname = user.user.lname;
                   grade.email = user.user.email;
                   grade.batchName = user.Batches[user.gradebook.IndexOf(gradebook)]; // assigns the string associated with the presented Index to grade.batchName
-                  grade.examID = gradebook.ExamSetting.ExamSettingsID;
+                  grade.examID = gradebook.ExamSetting.ExamTemplateID;
                   grade.technology = null;
                   grade.Score = gradebook.Score;
 
