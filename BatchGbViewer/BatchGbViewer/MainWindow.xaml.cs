@@ -27,6 +27,8 @@ namespace BatchGbViewer
       private static HttpClient usersClient = new HttpClient();
       private static HttpClient techClient = new HttpClient();
       private static HttpClient gradeClient = new HttpClient();
+      // this next client is an experimental client that I am testing the injection of several client paths
+      private static HttpClient client = new HttpClient();
 
       /// <summary>
       /// The purpose of this class is to initialize the Base Address for the HttpClients the application will
@@ -49,6 +51,10 @@ namespace BatchGbViewer
          gradeClient.BaseAddress = new Uri("http://ec2-54-215-138-178.us-west-1.compute.amazonaws.com/UserBuffetService/");
          gradeClient.DefaultRequestHeaders.Accept.Clear();
          gradeClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+         client.BaseAddress = new Uri("http://ec2-54-215-138-178.us-west-1.compute.amazonaws.com/UserBuffetService/");
+         client.DefaultRequestHeaders.Accept.Clear();
+         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
       }
 
       /// <summary>

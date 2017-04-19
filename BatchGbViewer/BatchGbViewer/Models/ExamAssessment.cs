@@ -14,7 +14,7 @@ namespace BatchGbViewer.Models
       public int SettingsID { get; set; }
       public Nullable<System.TimeSpan> TimeRemaining { get; set; }
       public Nullable<bool> IsExamComplete { get; set; }
-      public Nullable<double> Score { get; set; }
+      public Nullable<decimal> Score { get; set; }
       public virtual ExamSetting ExamSetting { get; set; }
       public virtual ICollection<QuestionOrder> QuestionOrders { get; set; }
    }

@@ -13,7 +13,7 @@ namespace BatchGbViewer.Models
       public string email { get; set; }
       public string batchName { get; set; }
       public string technology { get; set; }
-      public string examName { get; set; }
-      public double Score { get; set; }
+      public int examID { get; set; }
+      public Nullable<decimal> Score { get; set; }
    }
 }

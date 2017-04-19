@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BatchGbViewer.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -73,9 +74,9 @@ namespace BatchGbViewer
             {
                // This if statement is to ensure only users who are Trainers are collected 
                // and only valid Trainers (must have first and last name) are accepted into the list
-               if (u.UserType == 3 && !string.IsNullOrEmpty(u.FName) && !string.IsNullOrEmpty(u.LName))
+               if (u.UserType == 3 && !string.IsNullOrEmpty(u.fname) && !string.IsNullOrEmpty(u.lname))
                {
-                  user.Add(u.FName + " " + u.LName);
+                  user.Add(u.fname + " " + u.lname);
                }
             }
          }

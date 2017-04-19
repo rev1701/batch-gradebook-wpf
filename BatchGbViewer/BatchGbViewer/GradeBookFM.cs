@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BatchGbViewer.Models;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -29,22 +31,21 @@ namespace BatchGbViewer
       }
 
       /// <summary>
-      /// The purpose of this method is to get all batches and their content as a List Object.
-      /// 
+      /// THe purpose of this method is to gather only the Batch Names and return them as a list
       /// </summary>
       /// <returns></returns>
       private async Task<List<string>> GetBatchList()
       {
-         HttpResponseMessage response = await batchClient.GetAsync("./api/Batches");
-         response.EnsureSuccessStatusCode(); // throw an error code
-         var batch = await response.Content.ReadAsAsync<IEnumerable<Batch>>();
-         List<string> batches = new List<string>();
+         HttpResponseMessage response = await client.GetAsync("api/Batches");
+         response.EnsureSuccessStatusCode(); // throw an error code if the connection is unsuccessful
+         var batch = await response.Content.ReadAsAsync<IEnumerable<Batch>>(); // populate a temp variable with the Ansynchronous Data
+         List<string> batches = new List<string>(); // initialize the Batch Name list
 
          if (batch != null)
          {
             foreach (Batch b in batch)
             {
-               batches.Add(b.Name);
+               batches.Add(b.Name); // store only the Batch Name in the list
             }
          }
 
@@ -69,88 +70,50 @@ namespace BatchGbViewer
       /// </summary>
       /// <param name="sender"></param>
       /// <param name="e"></param>
-      private async void GB_DataGrid_View_Loaded(object sender, RoutedEventArgs e)
+      private void GB_DataGrid_View_Loaded(object sender, RoutedEventArgs e)
       {
          var gridView = sender as DataGrid;
-         gridView.ItemsSource = await GetInitialGridView2();
+         gridView.ItemsSource = GetInitialGridView2();
       }
       
       /// <summary>
       /// 
       /// </summary>
       /// <returns></returns>
-      private async Task<List<UserGradeBook>> GetInitialGridView2()
+      private List<Grade> GetInitialGridView2()
       {
-         HttpClient client = new HttpClient();
+         List<UserGradeBook> gradebooks = new List<UserGradeBook>(); // initialize gradebook list
+         List<Grade> grades = new List<Grade>(); // initialize grade list
 
-      }
-
-
-
-
-      /// <summary>
-      /// This method is designed to interlace several API calls and generate the
-      /// initial DataGrid view based on the results
-      /// </summary>
-      private async Task<List<Grade>> GetInitialGridView()
-      {
-         // Creates the GradeBook List variable
-         List<Grade> grades = new List<Grade>();
-
-         // Creates the initial HTTP Request to the API call to collect the Users
-         HttpResponseMessage userResponse = await usersClient.GetAsync("./api/Users/");
-         
-         if (userResponse.IsSuccessStatusCode) // confirms that the connection was successful
+         HttpResponseMessage response = client.GetAsync("api/Users/GetAllUserGradebooks").Result;
+         if (response.IsSuccessStatusCode) // confirm successful HTTP Request
          {
-            try
-            {
-               // Establishes a variable holder for the initial content that is being pooled
-               var user = await userResponse.Content.ReadAsAsync<IEnumerable<User>>();
+            var obj = response.Content.ReadAsStringAsync().Result; 
+            gradebooks = JsonConvert.DeserializeObject<List<UserGradeBook>>(obj);
+            Batch batch = new Batch();
 
-               if (user != null) // Confirms that the pool is not empty
+            foreach (var user in gradebooks)
+            {
+               foreach (var gradebook in user.gradebook)
                {
-                  foreach (User u in user)
-                  {
-                     // Makes a 2nd Http Request utilizing the emails of the collected Users to get each user's Gradebook
-                     HttpResponseMessage gradeResponse = await usersClient.GetAsync("./api/Users/GetUserGradebook?email=" + u.email);
-                     if (gradeResponse.IsSuccessStatusCode) // Confirms that the connection was successful
-                     {
-                        try
-                        {
-                           // Establishes a variable holder for the Grades that we are collecting
-                           var grade = await gradeResponse.Content.ReadAsAsync<IEnumerable<Grade>>();
-                           foreach (Grade g in grade)
-                           {
-                              grades.Add(g); // stores all of the new content into the established list variable
-                           }
-                        }
-                        catch (Exception e) // Display error if the try fails to generate and store the list properly
-                        {
-                           Console.WriteLine(e);
-                        }
-                     }
-                     else // display an error if the connection to the User/Gradebook API fails
-                     {
-                        Console.WriteLine("Failed to establish a connection with GetUserGradebook");
-                     }
-                  }
-               }
-               else // display an error if User Pool is Null
-               {
-                  Console.WriteLine("The users pool is empty. No Data to display");
+                  var grade = new Grade(); // create a temp object to act as a mapping helper to pass data between objects
+
+                  // populate the temp object with the appropriate components
+                  grade.fname = user.user.fname;
+                  grade.lname = user.user.lname;
+                  grade.email = user.user.email;
+                  grade.batchName = user.Batches[user.gradebook.IndexOf(gradebook)]; // assigns the string associated with the presented Index to grade.batchName
+                  grade.examID = gradebook.ExamSetting.ExamSettingsID;
+                  grade.technology = null;
+                  grade.Score = gradebook.Score;
+
+                  // add the temp object to the List Object
+                  grades.Add(grade);
                }
             }
-            catch (Exception e) // Display an error if it fails to complete any of the above tasks successfully
-            {
-               Console.WriteLine(e);
-            }
-         }
-         else // display an error if the connection to the User API fails
-         {
-            Console.WriteLine("Failed to establish a connection to API/Users");
          }
 
-         return grades; // return the results
+         return grades; // return list object
       }
 
       /// <summary>
@@ -169,19 +132,6 @@ namespace BatchGbViewer
       private void GenerateGridViewColumns()
       {
 
-      }
-
-      /// <summary>
-      /// This method is a test method designed to learn how to consume RESTful services within XAML
-      /// 
-      /// API for Assessments: http://ec2-54-215-138-178.us-west-1.compute.amazonaws.com/UserBuffetService/Help/Api/GET-api-ExamAssessments-GetExamAssessments
-      /// API for Batches: http://ec2-54-215-138-178.us-west-1.compute.amazonaws.com/UserBuffetService/Help/Api/GET-api-Batches-GetBatches
-      /// API for Users: http://ec2-54-215-138-178.us-west-1.compute.amazonaws.com/UserBuffetService/Help/Api/GET-api-Users-GetUsers
-      /// </summary>
-      /// <param name="uri"></param>
-      private void GetRESTData(string uri)
-      {
-        
       }
    }
 }

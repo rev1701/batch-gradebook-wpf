@@ -16,6 +16,6 @@ namespace BatchGbViewer.Models
 
       public User user { get; set; }
       public Dictionary<int, string> Batches { get; set; } // gradebook ID as key, batch name as value
-      public virtual ICollection<ExamAssessment> gradebook { get; set; }
+      public virtual List<ExamAssessment> gradebook { get; set; }
    }
 }
