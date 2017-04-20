@@ -444,7 +444,7 @@ namespace BatchGbViewer
 
     /// <summary>
     /// People are saying to use a converter to set a default option to combo boxes
-    /// so far I haven't gotten it to work.
+    /// so far I haven't gotten it to work. lolololol
     /// </summary>
     public class ComboBoxNullConverter : IValueConverter
     {
