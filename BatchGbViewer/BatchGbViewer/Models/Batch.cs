@@ -11,9 +11,9 @@ namespace BatchGbViewer.Models
       public string BatchID { get; set; }
       public string Name { get; set; }
       public string Technology { get; set; }
-      public DateTime StartDate { get; set; }
+      
       public string Trainer { get; set; }
-   }
+  
       public Nullable<System.DateTime> StartDate { get; set; }
       public Nullable<int> LengthInWeeks { get; set; }
 
@@ -38,10 +38,10 @@ namespace BatchGbViewer.Models
             var batchvm = new BatchVM();
             batchvm.Name = batch.Name;
             batchvm.Technology = batch.BatchID;
-            batchvm.StartDate = batch.StartDate;
+            //batchvm.StartDate = batch.StartDate;
             batchvm.FromDate = batchvm.StartDate;
-            batchvm.ToDate = batch.StartDate;
-            batchvm.TrainerName = user.FName + " " + user.LName;
+            //.ToDate = batch.StartDate;
+            batchvm.TrainerName = user.fname + " " + user.lname;
 
             return batchvm;
         }

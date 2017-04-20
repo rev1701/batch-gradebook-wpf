@@ -39,9 +39,9 @@ namespace BatchGbViewer
 
                 foreach(var item in us)
                 {
-                    k.FName = item.FName;
-                    k.LName = item.LName;
-                    k.ID = item.ID;
+                    k.fname = item.fname;
+                    k.lname = item.lname;
+                    k.email = item.email;
                     k.UserType = item.UserType;
                    
                 }
@@ -102,7 +102,7 @@ namespace BatchGbViewer
                        
 
                         var c = bat.Where(n => n.Name == b).FirstOrDefault();
-                        var k = us.Where(z => z.FName + " " + z.LName == tr).FirstOrDefault();
+                        var k = us.Where(z => z.fname + " " + z.lname == tr).FirstOrDefault();
                         
                         x.Add(m.MapToBatch(c, k));
                         Batchlistview.ItemsSource = x;
@@ -171,10 +171,10 @@ namespace BatchGbViewer
                 {
                     // This if statement is to ensure only users who are Trainers are collected 
                     // and only valid Trainers (must have first and last name) are accepted into the list
-                    if (u.UserType == "3" && !string.IsNullOrEmpty(u.FName) && !string.IsNullOrEmpty(u.LName))
+                    if (u.UserType == 3 && !string.IsNullOrEmpty(u.fname) && !string.IsNullOrEmpty(u.lname))
                     {
                         
-                        user.Add(u.FName + " " + u.LName);
+                        user.Add(u.fname + " " + u.lname);
                     }
                 }
             }
@@ -387,7 +387,7 @@ namespace BatchGbViewer
                 {
                     // This if statement is to ensure only users who are Trainers are collected 
                     // and only valid Trainers (must have first and last name) are accepted into the list
-                    if (u.UserType == "3" && !string.IsNullOrEmpty(u.FName) && !string.IsNullOrEmpty(u.LName))
+                    if (u.UserType == 3 && !string.IsNullOrEmpty(u.fname) && !string.IsNullOrEmpty(u.lname))
                     {
                         user.Add(u);
                     }
