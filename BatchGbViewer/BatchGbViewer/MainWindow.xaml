@@ -38,7 +38,9 @@
                      <!--Technology input-->
                      <StackPanel>
                         <TextBlock Text="Technology" Margin="7,0,76,5"/>
-                        <ComboBox x:Name="listTechnology" Margin="-13,0,0,0" Width="202" Height="20" SelectionChanged="listTechnology_SelectionChanged" Loaded="listTechnology_Loaded"></ComboBox>
+                                <ComboBox x:Name="listTechnology" Margin="-13,0,0,0" Width="202" Height="20"  SelectionChanged="listTechnology_SelectionChanged" Loaded="listTechnology_Loaded" 
+                                         IsEditable="False" Text="Select Technology" ></ComboBox>
+                         
                         <TextBlock></TextBlock>
                      </StackPanel>
 
@@ -53,9 +55,13 @@
 
                         <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
 
-                           <DatePicker x:Name="FromDate" Margin="6,0,0,0" Width="99"/>
+                           <DatePicker x:Name="FromDatePicker" Margin="6,0,0,0" Width="99"
+                                       SelectedDateChanged="FromDate_SelectedDateChanged"
+                                       SelectedDate="{Binding FromDate}" 
+                                        />
 
-                           <DatePicker x:Name="ToDate" Margin=" 4,0,0,0" Width="98"/>
+                           <DatePicker x:Name="ToDatePicker" Margin=" 4,0,0,0" Width="98" SelectedDateChanged="ToDate_SelectedDateChanged"
+                                       SelectedDate="{Binding ToDate}"/>
                            <TextBlock/>
                         </StackPanel>
 
@@ -87,14 +93,19 @@
                         <ColumnDefinition Width="0*"/>
                         <ColumnDefinition Width="54*"/>
                      </Grid.ColumnDefinitions>
-                     <ListView  ItemsSource="{Binding SourceCollection}" Margin="0,0,-946,10" ScrollViewer.CanContentScroll="True" Grid.ColumnSpan="4" Grid.Column="1">
+                     <ListView Name="Batchlistview" ItemsSource="{Binding SourceCollection}" Loaded="Batchlistview_Loaded" Margin="0,0,-946,10" ScrollViewer.CanContentScroll="True" Grid.ColumnSpan="4" Grid.Column="1">
                         <ListView.View>
                            <GridView>
-                              <GridViewColumn Header="Batch Name" Width="200"  DisplayMemberBinding="{Binding BatchName}" />
+                              <GridViewColumn Header="Batch Name" Width="200"  DisplayMemberBinding="{Binding Name}" />
+                               
                               <GridViewColumn Header="Technology" Width="200" DisplayMemberBinding="{Binding Technology}" />
-                              <GridViewColumn Header="Start Date From" Width="200" DisplayMemberBinding="{Binding StartDateFrom}" />
-                              <GridViewColumn Header="Start Date To" Width="200" DisplayMemberBinding="{Binding StartDateTo}" />
-                              <GridViewColumn Header="Trainer" Width="200" DisplayMemberBinding="{Binding Trainer}" />
+                               
+                              <GridViewColumn Header="Start Date From" Width="200" DisplayMemberBinding="{Binding FromDate}" />
+                               
+                              <GridViewColumn Header="Start Date To" Width="200" DisplayMemberBinding="{Binding ToDate}" />
+                               
+                              <GridViewColumn Header="Trainer" Width="200" DisplayMemberBinding="{Binding TrainerName}" />
+                               
                            </GridView>
                         </ListView.View>
                      </ListView>

@@ -11,8 +11,7 @@ namespace BatchGbViewer
       public string BatchID { get; set; }
       public string Name { get; set; }
       public string Technology { get; set; }
-      public DateTime StartDateFrom { get; set; }
-      public DateTime StartDateTo { get; set; }
+      public DateTime StartDate { get; set; }
       public string Trainer { get; set; }
    }
 
@@ -32,4 +31,30 @@ namespace BatchGbViewer
       public string Technology { get; set; }
       public double Grade { get; set; }
    }
+
+    public class BatchVM
+    {
+        public string Name { get; set; }
+        public string Technology { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime FromDate { get; set; }
+        public DateTime ToDate { get; set; }
+        public string TrainerName { get; set; }
+    }
+
+    public class BatchMapper
+    {
+        public BatchVM MapToBatch(Batch batch, User user)
+        {
+            var batchvm = new BatchVM();
+            batchvm.Name = batch.Name;
+            batchvm.Technology = batch.BatchID;
+            batchvm.StartDate = batch.StartDate;
+            batchvm.FromDate = batchvm.StartDate;
+            batchvm.ToDate = batch.StartDate;
+            batchvm.TrainerName = user.FName + " " + user.LName;
+
+            return batchvm;
+        }
+    }
 }

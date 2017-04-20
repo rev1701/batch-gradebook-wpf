@@ -51,5 +51,7 @@ namespace BatchGbViewer
          initializeClients(); // initialze clients
          InitializeComponent(); //begin application
       }
-   }
+
+        
+    }
 }
