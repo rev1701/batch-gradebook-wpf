@@ -142,9 +142,10 @@
                   <!-- Submit Button -->
                   <Button x:Name="Submit" Background="#AFAFAF" HorizontalAlignment="Left" Margin="149,15,0,0" Height="30" Width="50" Content="Submit" />
                </StackPanel>
+               
                <!-- Grid to contain search results -->
                <!-- Default designed to display ALL as the initial search upon opening the tab -->
-               <DataGrid x:Name="GB_DataGrid_View" Background="#FFFFFF" Grid.Column="2">
+               <DataGrid x:Name="GB_DataGrid_View" ItemsSource="{Binding}" Background="#FFFFFF" Grid.Column="2" AutoGenerateColumns="True" Loaded="GB_DataGrid_View_Loaded">
                </DataGrid>
                <ProgressBar Margin="0,521,0,-15" Grid.ColumnSpan="2" />
             </Grid>
