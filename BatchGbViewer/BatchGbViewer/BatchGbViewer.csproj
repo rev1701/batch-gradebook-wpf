@@ -79,7 +79,19 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models.cs" />
+    <Compile Include="Models\Batch.cs" />
+    <Compile Include="Models\ExamAssessment.cs" />
+    <Compile Include="Models\ExamQuestion.cs" />
+    <Compile Include="Models\ExamSetting.cs" />
+    <Compile Include="Models\ExamSettings_User.cs" />
+    <Compile Include="Models\Grade.cs" />
+    <Compile Include="Models\QuestionAnswer.cs" />
+    <Compile Include="Models\QuestionOrder.cs" />
+    <Compile Include="Models\Roster.cs" />
+    <Compile Include="Models\StatusType.cs" />
+    <Compile Include="Models\User.cs" />
+    <Compile Include="Models\UserGradebook.cs" />
+    <Compile Include="Models\UserType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
