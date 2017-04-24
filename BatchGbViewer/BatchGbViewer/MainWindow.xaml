@@ -112,24 +112,25 @@
                   <ColumnDefinition Width="106*"/>
                   <ColumnDefinition Width="527*"/>
                </Grid.ColumnDefinitions>
+               
+               <!-- Search Panel -->
                <StackPanel Grid.ColumnSpan="3">
                   <TextBlock x:Name="Search_GB" Text="Search" FontSize="20" Margin="5,5,0,0" FontWeight="ExtraBold"/>
 
-                  <!-- by Associate Name  -->
+                  <!-- Filster by Associate Name  -->
                   <Label x:Name="AssociateName" Content="By Associate Name" />
                   <StackPanel Orientation="Horizontal">
-                     <TextBox x:Name="AssociateFN" HorizontalAlignment="Left"  Height="23" Margin="10,5,0,0" Text="First Name" Width="90"/>
-                     <TextBox x:Name="AssociateLN" HorizontalAlignment="Left" Height="23" Margin="10,5,0,0" Text="Last Name" Width="90"/>
+                     <TextBox x:Name="AssociateFN" HorizontalAlignment="Left"  Height="23" Margin="10,5,0,0" Text="" Width="90"/>
+                     <TextBox x:Name="AssociateLN" HorizontalAlignment="Left" Height="23" Margin="10,5,0,0" Text="" Width="90"/>
                   </StackPanel>
 
-                  <!-- by Batch Name -->
+                  <!-- Filter by Batch Name -->
                   <Label x:Name="GB_Batch_Name" Content="By Batch Name" />
-                  <ComboBox x:Name="GB_listBox" Background="#FFFFFF" HorizontalAlignment="Left" Height="23" Margin="10,5,0,0" Width="190" Loaded="GB_listBox_Loaded" ItemsSource="{Binding}">
-                     <!--<ComboBoxItem Tag="Default" IsSelected="True">Select a Batch</ComboBoxItem>-->
-                  </ComboBox>
+                  <ComboBox x:Name="GB_BatchList" ItemsSource="{Binding}" Background="#FFFFFF" HorizontalAlignment="Left" Height="23" Margin="10,5,0,0" Width="190" Loaded="GB_listBox_Loaded" />
+                  <!--<ComboBoxItem Tag="Default" IsSelected="True">Select a Batch</ComboBoxItem>-->
 
                   <!-- Submit Button -->
-                  <Button x:Name="Submit" Background="#AFAFAF" HorizontalAlignment="Left" Margin="149,15,0,0" Height="30" Width="50" Content="Submit" />
+                  <Button x:Name="Submit" Background="#AFAFAF" HorizontalAlignment="Left" Margin="149,15,0,0" Height="30" Width="50" Content="Submit" Click="FilterGradeBook_Click" />
                </StackPanel>
                
                <!-- Grid to contain search results -->

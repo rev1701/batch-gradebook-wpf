@@ -23,7 +23,8 @@ namespace BatchGbViewer
    public partial class MainWindow : Window
    {
       // create the client for connecting to the api
-      private static HttpClient client = new HttpClient();
+      private static HttpClient batchClient = new HttpClient();
+      private static HttpClient examClient = new HttpClient();
 
       /// <summary>
       /// The purpose of this class is to initialize the Base Address for the HttpClients the application will
@@ -31,9 +32,13 @@ namespace BatchGbViewer
       /// </summary>
       private void initializeClients()
       {
-         client.BaseAddress = new Uri("http://ec2-54-215-138-178.us-west-1.compute.amazonaws.com/UserBuffetService/");
-         client.DefaultRequestHeaders.Accept.Clear();
-         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+         batchClient.BaseAddress = new Uri("http://ec2-54-215-138-178.us-west-1.compute.amazonaws.com/UserBuffetService/");
+         batchClient.DefaultRequestHeaders.Accept.Clear();
+         batchClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+         examClient.BaseAddress = new Uri("http://ec2-54-215-138-178.us-west-1.compute.amazonaws.com/ExamAssessmentWebAPI/");
+         examClient.DefaultRequestHeaders.Accept.Clear();
+         examClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
       }
 
       /// <summary>
