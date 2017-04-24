@@ -22,8 +22,10 @@ namespace BatchGbViewer
             Batch c = new Batch();
             User k = new User();
             List<BatchVM> x = new List<BatchVM>();
+
             var bat = await setBatches();
             var us = await setTrainers();
+
             for (int i = 0; i < 10; i++)
             {
 
@@ -155,7 +157,7 @@ namespace BatchGbViewer
         /// <returns></returns>
         public async Task<List<string>> getTrainers()
         {
-            HttpResponseMessage response = await usersClient.GetAsync("./api/users");
+            HttpResponseMessage response = await batchClient.GetAsync("./api/users");
             response.EnsureSuccessStatusCode(); // Throw on error code if HttpClient fails to connect.
             var users = await response.Content.ReadAsAsync<IEnumerable<User>>();
             List<string> user = new List<string>();
@@ -216,7 +218,7 @@ namespace BatchGbViewer
         /// <returns></returns>
         private async Task<List<string>> getTechnologies()
         {
-            HttpResponseMessage response = await techClient.GetAsync("./api/Batches");
+            HttpResponseMessage response = await batchClient.GetAsync("./api/Batches");
             response.EnsureSuccessStatusCode(); // Throw on error code.
             var tech = await response.Content.ReadAsAsync<IEnumerable<Batch>>();
             List<string> techs = new List<string>();
@@ -374,7 +376,7 @@ namespace BatchGbViewer
         /// <returns></returns>
         public async Task<List<User>> setTrainers()
         {
-            HttpResponseMessage response = await usersClient.GetAsync("./api/users");
+            HttpResponseMessage response = await batchClient.GetAsync("./api/users");
             response.EnsureSuccessStatusCode(); // Throw on error code if HttpClient fails to connect.
             var users = await response.Content.ReadAsAsync<IEnumerable<User>>();
             List<User> user = new List<User>();
@@ -425,7 +427,7 @@ namespace BatchGbViewer
         /// <returns></returns>
         private async Task<List<Batch>> setTechnologies()
         {
-            HttpResponseMessage response = await techClient.GetAsync("./api/Batches");
+            HttpResponseMessage response = await batchClient.GetAsync("./api/Batches");
             response.EnsureSuccessStatusCode(); // Throw on error code.
             var tech = await response.Content.ReadAsAsync<IEnumerable<Batch>>();
             List<Batch> techs = new List<Batch>();

@@ -27,7 +27,6 @@ namespace BatchGbViewer
       private void GB_listBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
       {
          List<string> x = new List<string>() { };
-         //listBatchName.Items.Add(x);
       }
 
       /// <summary>
@@ -36,10 +35,13 @@ namespace BatchGbViewer
       /// <returns></returns>
       private async Task<List<string>> GetBatchList()
       {
-         HttpResponseMessage response = await client.GetAsync("api/Batches");
+         HttpResponseMessage response = await batchClient.GetAsync("api/Batches");
          response.EnsureSuccessStatusCode(); // throw an error code if the connection is unsuccessful
          var batch = await response.Content.ReadAsAsync<IEnumerable<Batch>>(); // populate a temp variable with the Ansynchronous Data
          List<string> batches = new List<string>(); // initialize the Batch Name list
+
+         batches.Add("Select Batch"); // create the default selection for the list box
+         batches.Add("No Batch"); // create an option to include those who do not have a batch
 
          if (batch != null)
          {
@@ -73,19 +75,19 @@ namespace BatchGbViewer
       private void GB_DataGrid_View_Loaded(object sender, RoutedEventArgs e)
       {
          var gridView = sender as DataGrid;
-         gridView.ItemsSource = GetInitialGridView2();
+         gridView.ItemsSource = GetInitialGridView(); // uses the GetInitialGridView method to collect and populate the Gradebook List
       }
       
       /// <summary>
-      /// 
+      /// This method is used to gather the list and generate the initial Grid View for the Gradebook Tab
       /// </summary>
       /// <returns></returns>
-      private List<Grade> GetInitialGridView2()
+      private List<Grade> GetInitialGridView()
       {
          List<UserGradeBook> gradebooks = new List<UserGradeBook>(); // initialize gradebook list
          List<Grade> grades = new List<Grade>(); // initialize grade list
 
-         HttpResponseMessage response = client.GetAsync("api/Users/GetAllUserGradebooks").Result;
+         HttpResponseMessage response = batchClient.GetAsync("api/Users/GetAllUserGradebooks").Result;
          if (response.IsSuccessStatusCode) // confirm successful HTTP Request
          {
             var obj = response.Content.ReadAsStringAsync().Result; 
@@ -103,7 +105,7 @@ namespace BatchGbViewer
                   grade.lname = user.user.lname;
                   grade.email = user.user.email;
                   grade.batchName = user.Batches[user.gradebook.IndexOf(gradebook)]; // assigns the string associated with the presented Index to grade.batchName
-                  grade.examID = gradebook.ExamSetting.ExamTemplateID;
+                  grade.examName = gradebook.ExamSetting.ExamTemplateID; // get name assigned to exam
                   grade.technology = null;
                   grade.Score = gradebook.Score;
 
@@ -115,15 +117,113 @@ namespace BatchGbViewer
 
          return grades; // return list object
       }
+      
+      /// <summary>
+      /// This method is designed to filter the Gradebook results based on the user's search Criteria
+      /// </summary>
+      /// <param name="sender"></param>
+      /// <param name="e"></param>
+      private void FilterGradeBook_Click(object sender, RoutedEventArgs e)
+      {
+         // Declare all list objects
+         List<Grade> gb = new List<Grade>();
+         List<Grade> grades = new List<Grade>();
+
+         gb = GetInitialGridView(); // initialize gb (gradebook) list
+
+         if (!string.IsNullOrEmpty(AssociateFN.Text) || !string.IsNullOrEmpty(AssociateLN.Text)) // if either fname or lname have data, then filter by Name
+         {
+            grades = FilterGradeBookByName(gb, AssociateFN.Text, AssociateLN.Text); // populate list based on the filtered First/Last Name
+
+            if (GB_BatchList.SelectedIndex != 0) // if Batch is also not the default index ("Select Batch"), then filter the new list by batch as well
+            {
+               grades = FilterGradeBookByBatch(grades, GB_BatchList.Text);
+            }
+
+            GB_DataGrid_View.ItemsSource = grades; // populate the grid view with the new results
+         }
+         // If no name (first/last) is specified, but a batch is, then filter by batch only
+         else if (string.IsNullOrEmpty(AssociateFN.Text) && string.IsNullOrEmpty(AssociateLN.Text) && GB_BatchList.SelectedIndex != 0) 
+         {
+            grades = FilterGradeBookByBatch(gb, GB_BatchList.Text);
+            GB_DataGrid_View.ItemsSource = grades; // populate the grid view with the new results
+         }
+         else // If the search button is clicked, but no name (first/last) or batch is specified, then return the Initial Grid View
+         {
+            GB_DataGrid_View.ItemsSource = gb; // else restore the initial grid view
+         }
+      }
 
       /// <summary>
       /// This method is designed to alter the DataGrid view based on desired filters
       /// </summary>
-      private void FilterGridViewResults()
+      /// <param name="gb"></param>
+      /// <param name="fname"></param>
+      /// <param name="lname"></param>
+      /// <returns></returns>
+      private List<Grade> FilterGradeBookByName(List<Grade> gb, string fname, string lname)
       {
+         List<Grade> grades = new List<Grade>();
 
+         if (!string.IsNullOrEmpty(fname) && string.IsNullOrEmpty(lname)) // if first name has data, but last name is null/empty
+         {
+            foreach (var grade in gb)
+            {
+               if (grade.fname == fname)
+               {
+                  grades.Add(grade);
+               }
+            }
+         }
+         else if (string.IsNullOrEmpty(fname) && !string.IsNullOrEmpty(lname)) // if first name is null/empty, but last name has data
+         {
+            foreach (var grade in gb)
+            {
+               if (grade.lname == lname)
+               {
+                  grades.Add(grade);
+               }
+            }
+         }
+         else if (!string.IsNullOrEmpty(fname) && !string.IsNullOrEmpty(lname)) // if both first name and last name have data
+         {
+            foreach (var grade in gb)
+            {
+               if (grade.fname == fname && grade.lname == lname)
+               {
+                  grades.Add(grade);
+               }
+            }
+         }
+         else
+         {
+            return gb; // if both first name and last name are empty/null return the original list
+         }
+
+         return grades; // return the newly filtered list
       }
 
+      /// <summary>
+      /// This method will filter the search based on the batch name chosen by the user
+      /// </summary>
+      /// <param name="gb"></param>
+      /// <param name="batch"></param>
+      /// <returns></returns>
+      private List<Grade> FilterGradeBookByBatch(List<Grade> gb, string batch)
+      {
+         // Initialize the new list object
+         List<Grade> grades = new List<Grade>();
+
+         foreach (var grade in gb)
+         {
+            if (grade.batchName == batch)
+            {
+               grades.Add(grade);
+            }
+         }
+
+         return grades; // return the newly filtered list
+      }
 
 
       /// <summary>
@@ -131,7 +231,6 @@ namespace BatchGbViewer
       /// </summary>
       private void GenerateGridViewColumns()
       {
-
       }
    }
 }
