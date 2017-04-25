@@ -80,6 +80,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Batch.cs" />
+    <Compile Include="Models\BatchList.cs" />
     <Compile Include="Models\ExamAssessment.cs" />
     <Compile Include="Models\ExamQuestion.cs" />
     <Compile Include="Models\ExamSetting.cs" />
