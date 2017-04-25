@@ -38,8 +38,7 @@ namespace BatchGbViewer
             if (batches != null)
             {
                 foreach (Batch b in batches.ToList())
-                {
-
+                {                   
                     batch.Add(b.Name);
                 }
             }
@@ -61,7 +60,6 @@ namespace BatchGbViewer
             {
                 foreach (Batch b in batches.ToList())
                 {
-
                     batch.Add(b);
                 }
             }
@@ -156,8 +154,22 @@ namespace BatchGbViewer
             {
                 foreach (Batch b in tech.ToList())
                 {
+                    var c = new Batch();
+                    c.BatchID = b.BatchID;
+                    if (c.BatchID == "WeTheBest")
+                    {
+                        c.Technology = ".NET";
+                    }
+                    else if (c.BatchID == "LetItBurn")
+                    {
+                        c.Technology = "Java";
+                    }
+                    else
+                    {
+                        c.Technology = "SDET";
+                    }
 
-                    techs.Add(b.BatchID);
+                    techs.Add(c.Technology);
                 }
             }
             return techs;
@@ -180,7 +192,22 @@ namespace BatchGbViewer
             {
                 foreach (Batch b in tech.ToList())
                 {
-                    techs.Add(b);
+                    var c = new Batch();
+                    c.BatchID = b.BatchID;
+                    if (c.BatchID == "WeTheBest")
+                    {
+                        c.Technology = ".NET";
+                    }
+                    else if (c.BatchID == "LetItBurn")
+                    {
+                        c.Technology = "Java";
+                    }
+                    else
+                    {
+                        c.Technology = "SDET";
+                    }
+
+                    techs.Add(c);
                 }
             }
             return techs;
@@ -200,39 +227,42 @@ namespace BatchGbViewer
             HttpResponseMessage response = batchClient.GetAsync("api/Batches").Result;
             response.EnsureSuccessStatusCode(); // Throw on error code. 
             var batches = await response.Content.ReadAsAsync<IEnumerable<Batch>>();
-
             // retrieve the user info from the api
             HttpResponseMessage response2 = batchClient.GetAsync("api/Users").Result;
             response2.EnsureSuccessStatusCode(); // Throw on error code. 
             var users = await response2.Content.ReadAsAsync<IEnumerable<User>>();
-
             // list for the batch view model
             List<BatchVM> batch = new List<BatchVM>();
-
             // ensure that neither list is empty
             if (batches != null && users != null)
-            {
-                // create the roster list
+            {                // create the roster list
                 List<Roster> r = new List<Roster>();
-
                 // map the batch and trainer info
                 foreach (Batch b in batches.ToList())
-                {
-                    // temporay batch vm for the population of the page
+                {                    // temporay batch vm for the population of the page
                     var x = new BatchVM();
                     // sift through the users for only trainers
                     foreach (var t in users)
-                    {
-                        // get the roster of users associated with a batch
+                    {                        // get the roster of users associated with a batch
                         for (int i = 0; i < batches.Count(); i++)
-                        {
-                            // grab only the trainers
+                        {                            // grab only the trainers
                             r = b.Rosters.Where(pp => pp.User.UserType == 3).ToList();
-                        }
-                        // go through the roster and map the trainers to their batches
+                        }                        // go through the roster and map the trainers to their batches
                         foreach (var s in r)
-                        {
+                        {// for now the technology is being associated with the batch id which is a string
                             x.Technology = b.BatchID;
+                            if (x.Technology == "WeTheBest")
+                            {
+                                x.Technology = ".NET";
+                            }
+                            else if (x.Technology == "LetItBurn")
+                            {
+                                x.Technology = "Java";
+                            }
+                            else
+                            {
+                                x.Technology = "SDET";
+                            }
                             x.Name = b.Name;
                             x.FromDate = b.StartDate;
                             x.ToDate = b.StartDate.Value.AddDays(69);

@@ -38,6 +38,20 @@ namespace BatchGbViewer.Models
             var batchvm = new BatchVM();
             batchvm.Name = batch.Name;
             batchvm.Technology = batch.BatchID;
+            var c = new Batch();
+
+            if (batch.BatchID == "WeTheBest")
+            {
+                batchvm.Technology = ".NET";
+            }
+            else if (batch.BatchID == "LetItBurn")
+            {
+                batchvm.Technology = "Java";
+            }
+            else
+            {
+                batchvm.Technology = "SDET";
+            }
             batchvm.StartDate = batch.StartDate;
             batchvm.FromDate = batchvm.StartDate;
             batchvm.ToDate = batch.StartDate.Value.AddDays(69);
