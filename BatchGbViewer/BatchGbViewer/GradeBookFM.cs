@@ -20,6 +20,18 @@ namespace BatchGbViewer
    public partial class MainWindow : Window
    {
       /// <summary>
+      /// This method will handle how the drop down filter is populated
+      /// </summary>
+      /// <param name="sender"></param>
+      /// <param name="e"></param>
+      private async void GB_listBox_Loaded(object sender, RoutedEventArgs e)
+      {
+         var comboBox = sender as ComboBox;
+         comboBox.ItemsSource = await GetBatchList();
+         comboBox.SelectedIndex = 0;
+      }
+
+      /// <summary>
       /// This method will handle the events that occure when the user changes the listbox selection
       /// </summary>
       /// <param name="sender"></param>
@@ -52,18 +64,6 @@ namespace BatchGbViewer
          }
 
          return batches;
-      }
-
-      /// <summary>
-      /// This method will handle how the drop down filter is populated
-      /// </summary>
-      /// <param name="sender"></param>
-      /// <param name="e"></param>
-      private async void GB_listBox_Loaded(object sender, RoutedEventArgs e)
-      {
-         var comboBox = sender as ComboBox;
-         comboBox.ItemsSource = await GetBatchList();
-         comboBox.SelectedIndex = 0;
       }
 
       /// <summary>
@@ -163,44 +163,84 @@ namespace BatchGbViewer
       /// <returns></returns>
       private List<Grade> FilterGradeBookByName(List<Grade> gb, string fname, string lname)
       {
-         List<Grade> grades = new List<Grade>();
+         List<Grade> grades = new List<Grade>(); // initialize list
 
-         if (!string.IsNullOrEmpty(fname) && string.IsNullOrEmpty(lname)) // if first name has data, but last name is null/empty
+         if (!string.IsNullOrEmpty(fname) || !string.IsNullOrEmpty(lname)) // confirm that either first name or last name contain data
          {
+            char[] searchByFirst = fname.ToLower().ToArray(); // append fname to array and remove case sensitivity
+            char[] searchByLast = lname.ToLower().ToArray(); // append lname to array and remove case sensitivity
+
             foreach (var grade in gb)
             {
-               if (grade.fname == fname)
+               char[] testAgainstFirst = grade.fname.ToLower().ToArray(); // append grade.fname to array and remove case sensitivity
+               char[] testAgainstLast = grade.lname.ToLower().ToArray(); // append grade.lname to array and remove case sensitivity
+               int f = 0; // initialize f -- used for first name comparison
+               int l = 0; // initialize l -- used for last name comparison
+
+               if (searchByFirst != null && searchByLast == null) // search by first name only
                {
-                  grades.Add(grade);
+                  f = compareNames(searchByFirst, testAgainstFirst);
+                  if (f == fname.Length)
+                  {
+                     grades.Add(grade); // add match to results
+                  }
                }
-            }
-         }
-         else if (string.IsNullOrEmpty(fname) && !string.IsNullOrEmpty(lname)) // if first name is null/empty, but last name has data
-         {
-            foreach (var grade in gb)
-            {
-               if (grade.lname == lname)
+               else if (searchByFirst != null && searchByLast != null) // search by first and last
                {
-                  grades.Add(grade);
+                  f = compareNames(searchByFirst, testAgainstFirst);
+                  l = compareNames(searchByLast, testAgainstLast);
+
+                  if (f == fname.Length && l == lname.Length)
+                  {
+                     grades.Add(grade); // add match to results
+                  }
                }
-            }
-         }
-         else if (!string.IsNullOrEmpty(fname) && !string.IsNullOrEmpty(lname)) // if both first name and last name have data
-         {
-            foreach (var grade in gb)
-            {
-               if (grade.fname == fname && grade.lname == lname)
+               else if (searchByFirst == null && searchByLast != null) // search by last name only
                {
-                  grades.Add(grade);
+                  l = compareNames(searchByLast, testAgainstLast);
+
+                  if (l == lname.Length)
+                  {
+                     grades.Add(grade); // add match to results
+                  }
                }
             }
          }
          else
          {
-            return gb; // if both first name and last name are empty/null return the original list
+            return gb;
          }
 
-         return grades; // return the newly filtered list
+         return grades;
+      }
+
+      /// <summary>
+      /// This is a factory method designed specifically for testing the characters in two given names
+      /// which are put inside of an array so that each letter can be tested individually.
+      /// This is designed with partial search in mind
+      /// 
+      /// Later implementation will be to test an accidental discovery that might lead to only comparing the strings
+      /// without the need of an array
+      /// </summary>
+      /// <param name="search"></param>
+      /// <param name="against"></param>
+      /// <returns></returns>
+      private int compareNames(char[] search, char[] against)
+      {
+         int i = 0; // initialize comparison variable
+
+         while (i < search.Length)
+         {
+            if (search[i] == against[i])
+            {
+               i++;
+            }
+            else
+            {
+               break;
+            }
+         }
+         return i;
       }
 
       /// <summary>
