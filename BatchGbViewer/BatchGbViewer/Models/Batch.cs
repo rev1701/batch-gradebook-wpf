@@ -25,10 +25,10 @@ namespace BatchGbViewer.Models
     {
         public string Name { get; set; }
         public string Technology { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime FromDate { get; set; }
-        public DateTime ToDate { get; set; }
-        public string TrainerName { get; set; }
+        public Nullable<System.DateTime> StartDate { get; set; }
+        public Nullable<System.DateTime> FromDate { get; set; }
+        public Nullable<System.DateTime> ToDate { get; set; }
+        public string Trainer { get; set; }
     }
 
     public class BatchMapper
@@ -38,10 +38,24 @@ namespace BatchGbViewer.Models
             var batchvm = new BatchVM();
             batchvm.Name = batch.Name;
             batchvm.Technology = batch.BatchID;
-            //batchvm.StartDate = batch.StartDate;
+            var c = new Batch();
+
+            if (batch.BatchID == "WeTheBest")
+            {
+                batchvm.Technology = ".NET";
+            }
+            else if (batch.BatchID == "LetItBurn")
+            {
+                batchvm.Technology = "Java";
+            }
+            else
+            {
+                batchvm.Technology = "SDET";
+            }
+            batchvm.StartDate = batch.StartDate;
             batchvm.FromDate = batchvm.StartDate;
-            //.ToDate = batch.StartDate;
-            batchvm.TrainerName = user.fname + " " + user.lname;
+            batchvm.ToDate = batch.StartDate.Value.AddDays(69);
+            batchvm.Trainer = user.fname + " " + user.lname;
 
             return batchvm;
         }
