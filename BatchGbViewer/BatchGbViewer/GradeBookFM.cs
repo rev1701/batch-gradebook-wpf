@@ -163,7 +163,7 @@ namespace BatchGbViewer
       /// <returns></returns>
       private List<Grade> FilterGradeBookByName(List<Grade> gb, string fname, string lname)
       {
-         List<Grade> grades = new List<Grade>();
+         List<Grade> grades = new List<Grade>(); // initialize list
 
          if (!string.IsNullOrEmpty(fname) || !string.IsNullOrEmpty(lname)) // confirm that either first name or last name contain data
          {
