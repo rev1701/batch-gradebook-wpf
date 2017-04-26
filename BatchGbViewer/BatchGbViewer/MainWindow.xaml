@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BatchGbViewer"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="1300" Icon="Images/revature.ico">
+        Title="Batch GradeBook" Height="600" Width="1300" Icon="Images/revature.ico">
 
    <Grid>
       <TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="559" Margin="10,10,0,0" VerticalAlignment="Top" Width="1272">
@@ -100,11 +100,11 @@
                                
                               <GridViewColumn Header="Technology" Width="200" DisplayMemberBinding="{Binding Technology}" />
                                
-                              <GridViewColumn Header="Start Date From" Width="200" DisplayMemberBinding="{Binding FromDate}" />
+                              <GridViewColumn Header="Start Date" Width="200" DisplayMemberBinding="{Binding FromDate}" />
                                
-                              <GridViewColumn Header="Start Date To" Width="200" DisplayMemberBinding="{Binding ToDate}" />
+                              <GridViewColumn Header="End Date" Width="200" DisplayMemberBinding="{Binding ToDate}" />
                                
-                              <GridViewColumn Header="Trainer" Width="200" DisplayMemberBinding="{Binding TrainerName}" />
+                              <GridViewColumn Header="Trainer" Width="200" DisplayMemberBinding="{Binding Trainer}" />
                                
                            </GridView>
                         </ListView.View>
